@@ -93,7 +93,7 @@ int main(int argc, char const *argv[]){
 
 	//output the file as a hex document 
 	open_file(fout, fileName+".new");
-	saveFile(matrix, fout, col, row);
+	output_data(matrix, fout, col, row);
 
 	cerr(boxes.size());
 

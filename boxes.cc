@@ -86,6 +86,11 @@ void input_data(vector<vector<int> >& matrix, ifstream& fin, int& col, int& row)
 	}
 }
 
+//output the new file that is has the boxes in it
+void output_data(vector<vector<int> >& matrix, ofstream& fout, int col, int row){
+
+}
+
 //The equation to check in range is: |x1 - x| <= 3 && |y1 - y| <= 3
 
 //used in the program to check if the outlines for boxes are close enough that they should merge into one box
