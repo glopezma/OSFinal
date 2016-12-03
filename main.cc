@@ -42,10 +42,6 @@ int main(int argc, char const *argv[]){
 			if(matrix[i][j] == 1){
 				if(boxes.empty()){	//If it's empty, then we need to create the first box which is done as such.  
 					boxes.push_back(new box());
-					// boxes[0].max_y = i;
-					// boxes[0].min_y = i;
-					// boxes[0].max_x = j;
-					// boxes[0].min_x = j;
 					boxes[0].cord.push_back(new coordinates);
 					boxes[0].cord[0].x = j;
 					boxes[0].cord[0].y = i;
@@ -90,6 +86,8 @@ int main(int argc, char const *argv[]){
 	//set mins and maxes for all the boxes again in case boxes merged
 	for(int i=0; i<boxes.size(); ++i){
 		boxes[i].setBox();
+		draw_box(boxes[i], matrix);
 	}
+
 	return 0;
 }

@@ -24,6 +24,7 @@ struct box{
 
 void open_file(ifstream& fin, string file);
 void input_data(vector<vector<int> >& matrix, ifstream& fin, int& col, int& row);
+bool draw_box(box myBox, vector<vector<int> >& matrix);
 bool inRange(int max_var, int min_var, box myBox);
 bool inRangeCord(int x, int y, box myBox);
 bool boxInRange(box box1, box box2);

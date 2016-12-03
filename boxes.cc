@@ -119,6 +119,20 @@ bool boxInRange(box box1, box box2){
 	return false;
 }
 
+//looks at the max/min y/x to draw a line between the coordinates creating the box
+bool draw_box(box myBox, vector<vector<int> >& matrix){
+	int yDistance = abs(myBox.max_y - myBox.min_y);
+	int xDistance = abs(myBox.max_x - myBox.min_x);
+
+	for(int i=0; i<=yDistance; ++i){
+		matrix[myBox.min_y+i][myBox.min_x]=1;
+		matrix[myBox.min_y+i][myBox.max_x]=1;
+	}
+	for(int i=0; i<=xDistance; ++i){
+		matrix[myBox.min_x+i][myBox.min_y]=1;
+		matrix[myBox.min_x+i][myBox.max_y]=1;	}
+}
+
 char binToHex(string value){
 	switch(value){
 		case "0000": return '0';
