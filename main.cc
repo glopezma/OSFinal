@@ -28,13 +28,15 @@ int main(int argc, char const *argv[]){
 	bool found = true;
 	string fileName = argv[1];
 	//int pthreadNum = argv[2];
-	ifstream fin;					
+	ifstream fin;	
+	ofstream fout;				
 	vector<vector<int> > matrix;	//matrix that holds the entire file
 	vector<box> boxes;				//contains the struct that holds the coordinates of the letters I need to box
 	vector<int> deleteBoxes; 		//structure for error correction to hold which boxes need to be deleted during merging of boxes
 
 	open_file(fin, fileName);	//file opened
 	input_data(matrix, fin, col, row); 	//matrix created
+	fin.close();
 
 	//This is the initial creation of boxes that will need another function at the end to make sure there were no errors.  It groups coordinates together. 
 	for(int i=0; i<col, ++i){
@@ -88,6 +90,12 @@ int main(int argc, char const *argv[]){
 		boxes[i].setBox();
 		draw_box(boxes[i], matrix);
 	}
+
+	//output the file as a hex document 
+	open_file(fout, fileName+".new");
+	saveFile(matrix, fout, col, row);
+
+	cerr(boxes.size());
 
 	return 0;
 }
