@@ -87,6 +87,9 @@ int main(int argc, char const *argv[]){
 			}
 		}
 	}
-
+	//set mins and maxes for all the boxes again in case boxes merged
+	for(int i=0; i<boxes.size(); ++i){
+		boxes[i].setBox();
+	}
 	return 0;
 }
