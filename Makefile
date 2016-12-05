@@ -1,11 +1,11 @@
-bounding_box: main.o boxes.o 
+bounding_box: pbmb_io.o main.o 
 	g++ -o bounding_box *.o 
 
-main.o: main.cc
-	g++ -c -g main.cc
+main.o: pbmb_io_prb.cpp
+	g++ -c -g pbmb_io_prb.cpp
 
-boxes.o: boxes.h boxes.cc
-	g++ -c boxes.cc
+pbmb_io.o: pbmb_io.cpp pbmb_io.hpp
+	g++ -c pbmb_io.cpp
 
 clean: 
 	rm *.o *~ 
