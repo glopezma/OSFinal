@@ -13,14 +13,13 @@ using namespace std;
 void input_data(std::vector<std::vector<int> >& matrix, int col, int row, int *barray){
 	//this function inputs all the data in the file into the program's matrix
 	//imports the file into a matrix so easier to traverse
-	// cout<<col<<" "<<row<<endl;
-	for(int i=1; i<col; ++i){
-		// cout<<i<<".) ";
+	cout<<col<<" "<<row<<endl;
+	for(int i=0; i<col; ++i){
+		cout<<i<<".) ";
 		for(int j=0; j<row; ++j){
 			matrix[i][j] = *((int *)barray+i * row+j);
-			// cout<<matrix[i][j];
-			//barray++;	
-		}	// cout<<endl;
+		    cout<<matrix[i][j];
+		}	cout<<endl;
 	}
 	delete [] barray;
 }

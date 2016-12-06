@@ -40,7 +40,7 @@ int main(int argc, char const *argv[]){
 		cout << "  PBMB_READ failed!\n";
 	}
 
-	vector<vector<int> > matrix(col, std::vector<int>(row));
+	vector<vector<int> > matrix(col, std::vector<int>(row)); //create the cc*rr matrix
 
 	input_data(matrix, col, row, b); 	//fills matrix with the data from the .pbm file
  
@@ -76,12 +76,13 @@ int main(int argc, char const *argv[]){
 		}
 	}
 //-------------------------------- Before box --------------------------------
-	cout<<endl<<col<<" "<<row;
 	cout<<endl<<"Matrix Before:"<<endl;
 	for(int i=0; i<col; ++i){
+	 	// cout<<endl<<col<<"/"<<matrix.size()<<" "<<row<<"/"<<matrix[i].size()<<endl;
 		cout<<i<<".) ";
 		for(int j=0; j<row; ++j){
 			cout<<matrix[i][j];
+			// cout<<"i:"<<i<<" j:"<<j<<endl;
 		}
 		cout<<endl;
 	}
