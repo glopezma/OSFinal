@@ -20,44 +20,30 @@ using namespace std;
 
 int main(int argc, char const *argv[]){
 	//If there aren't enough arguments, then the program shuts down
-	if(argc < 2){
+	if(argc != 3){
 		exit(1);
 	}
 	int col = 0;
 	int row = 0;
 	bool found = true;
 	string fileName = argv[1];
-	//int pthreadNum = argv[2];			
-	vector<vector<int> > matrix;	//matrix that holds the entire file
+	//int pthreadNum = atoi(argv[2]);			
 	vector<box> boxes;				//contains the struct that holds the coordinates of the letters I need to box
 	vector<int> deleteBoxes; 		//structure for error correction to hold which boxes need to be deleted during merging of boxes
 
 	int *b;
 	bool error;
-	error = pbmb_write_test( fileName );
-
-	if ( error ){
-		cout << "\n";
-		cout << "  PBMB_WRITE_TEST failed!\n";
-	}
-	else{
-		cout << "\n";
-		cout << "  PBMB_WRITE_TEST created some test data.\n";
-	}//will need to remove
+	
 	error = pbmb_read ( fileName, row, col, &b );
-
 	if ( error ){
 		cout << "\n";
 		cout << "  PBMB_READ failed!\n";
 	}
-	else{
-		cout << "\n";
-		cout << "  PBMB_READ read the test data successfully.\n";
-	}//will need to remove
 
-	input_data(matrix, col, row, b); 	//matrix created
-	delete [] b;
-	
+	vector<vector<int> > matrix(col, std::vector<int>(row));
+
+	input_data(matrix, col, row, b); 	//fills matrix with the data from the .pbm file
+ 
 	//This is the initial creation of boxes that will need another function at the end to make sure there were no errors.  It groups coordinates together. 
 	for(int i=0; i<col; ++i){
 		for(int j=0; j<row; ++j){
@@ -115,11 +101,30 @@ int main(int argc, char const *argv[]){
 		draw_box(boxes[i], matrix);
 	}
 
-	b = new int[col*row];
+	for(int i=0; i<col; ++i){
+		for(int j=0; j<row; ++j){
+			cout<<matrix[i][j]<<" ";
+		}
+		cout<<endl;
+	}
+	// b = new int[col*row];
 	//put all matrix data into array
 	// pbmb_write(outputFile, col, row, b);
 
 	cerr<<boxes.size();
-
+*/
 	return 0;
 }
+
+
+
+// cout<<endl<<col<<" "<<row;
+	// cout<<endl<<"Matrix:"<<endl;
+	// for(int i=0; i<matrix.size(); ++i){
+	// 	cout<<i<<".) ";
+	// 	for(int j=0; j<matrix[i].size(); ++j){
+	// 		cout<<matrix[i][j];
+	// 	}
+	// 	cout<<endl;
+	// }
+	// cout<<"end of matrix output";

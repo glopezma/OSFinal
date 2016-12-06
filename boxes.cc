@@ -9,25 +9,21 @@
 #include <cmath>
 using namespace std;
 
-//this function just opens the file
-void open_file(ifstream& fin, string file){
-  fin.open(file.c_str());
-  if(fin.fail()){
-      cout<<"problem with file open"<<endl;
-    }
+//This function inputs the pbm image into a matrix
+void input_data(std::vector<std::vector<int> >& matrix, int col, int row, int *barray){
+	//this function inputs all the data in the file into the program's matrix
+	//imports the file into a matrix so easier to traverse
+	// cout<<col<<" "<<row<<endl;
+	for(int i=1; i<col; ++i){
+		// cout<<i<<".) ";
+		for(int j=0; j<row; ++j){
+			matrix[i][j] = *((int *)barray+i * row+j);
+			// cout<<matrix[i][j];
+			//barray++;	
+		}	// cout<<endl;
+	}
+	delete [] barray;
 }
-
-// coordinates::coordinates(){
-// 	x=0;
-// 	y=0;
-// }
-
-// box::box(){
-// 	max_x = 0;			
-// 	max_y = 0; 			
-// 	min_x = 0;			
-// 	min_y = 0; 			
-// }
 
 void setBox(box& myBox){
 	for(int i=0; i<myBox.cord.size(); ++i){
@@ -42,18 +38,6 @@ void setBox(box& myBox){
 		}
 		else if(myBox.cord[i].y < myBox.min_y){
 			myBox.min_y = myBox.cord[i].y;
-		}
-	}
-}
-
-//This function inputs the pbm image into a matrix
-void input_data(std::vector<std::vector<int> >& matrix, int col, int row, int *barray){
-	//this function inputs all the data in the file into the program's matrix
-	//imports the file into a matrix so easier to traverse
-	for(int i = 0; i<col; ++i){
-		for(int j = 0; j<row; ++j){
-			matrix[i][j] = *barray;
-			barray++;	
 		}
 	}
 }
@@ -186,4 +170,24 @@ bool draw_box(box myBox, vector<vector<int> >& matrix){
 //output the new file that is has the boxes in it
 // void output_data(vector<vector<int> >& matrix, ofstream& fout, int col, int row){
 
+// }
+
+//this function just opens the file
+// void open_file(ifstream& fin, string file){
+//   fin.open(file.c_str());
+//   if(fin.fail()){
+//       cout<<"problem with file open"<<endl;
+//     }
+// }
+
+// coordinates::coordinates(){
+// 	x=0;
+// 	y=0;
+// }
+
+// box::box(){
+// 	max_x = 0;			
+// 	max_y = 0; 			
+// 	min_x = 0;			
+// 	min_y = 0; 			
 // }
