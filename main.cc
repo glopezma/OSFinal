@@ -75,15 +75,28 @@ int main(int argc, char const *argv[]){
 			}
 		}
 	}
-	
-	//set mins and maxes for all the known boxes
+//-------------------------------- Before box --------------------------------
+	cout<<endl<<col<<" "<<row;
+	cout<<endl<<"Matrix Before:"<<endl;
+	for(int i=0; i<col; ++i){
+		cout<<i<<".) ";
+		for(int j=0; j<row; ++j){
+			cout<<matrix[i][j];
+		}
+		cout<<endl;
+	}
+	cout<<"Before boxes";
+
+//-------------------------------- Before box --------------------------------
+
+	//set min and max for all boxes
 	for(int i=0; i<boxes.size(); ++i){
 		setBox(boxes[i]); 
 	}
 
-	//error correction to see if 2 boxes should actually be 1 box.  Combines them if necessary!
-	for(int i=0; i<boxes.size(); ++i){
-		for(int j=i; j<boxes.size(); ++j){
+	//merge boxes if they are close enough together
+	for(int i=0; i<col; ++i){
+		for(int j=i; row; ++j){
 			if(j != i){
 				if(boxInRange(boxes[i], boxes[j])){
 					deleteBoxes.push_back(j);
@@ -95,36 +108,32 @@ int main(int argc, char const *argv[]){
 			}
 		}
 	}
-	//set mins and maxes for all the boxes again in case boxes merged
+
+	//set min and max for all boxes again if they merged
 	for(int i=0; i<boxes.size(); ++i){
 		setBox(boxes[i]); 
 		draw_box(boxes[i], matrix);
 	}
 
+//-------------------------------- After Box --------------------------------
+	cout<<endl<<col<<" "<<row;
+	cout<<endl<<"Matrix:"<<endl;
 	for(int i=0; i<col; ++i){
+		cout<<i<<".) ";
 		for(int j=0; j<row; ++j){
-			cout<<matrix[i][j]<<" ";
+			cout<<matrix[i][j];
 		}
 		cout<<endl;
 	}
+	cout<<"after boxes";
+
+//-------------------------------- After Box --------------------------------
+
 	// b = new int[col*row];
 	//put all matrix data into array
 	// pbmb_write(outputFile, col, row, b);
 
 	cerr<<boxes.size();
-*/
+
 	return 0;
 }
-
-
-
-// cout<<endl<<col<<" "<<row;
-	// cout<<endl<<"Matrix:"<<endl;
-	// for(int i=0; i<matrix.size(); ++i){
-	// 	cout<<i<<".) ";
-	// 	for(int j=0; j<matrix[i].size(); ++j){
-	// 		cout<<matrix[i][j];
-	// 	}
-	// 	cout<<endl;
-	// }
-	// cout<<"end of matrix output";

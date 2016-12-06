@@ -25,6 +25,7 @@ void input_data(std::vector<std::vector<int> >& matrix, int col, int row, int *b
 	delete [] barray;
 }
 
+//sets max_x, max_y, min_x, min_y
 void setBox(box& myBox){
 	for(int i=0; i<myBox.cord.size(); ++i){
 		if(myBox.cord[i].x > myBox.max_x){
@@ -42,10 +43,8 @@ void setBox(box& myBox){
 	}
 }
 
-//The equation to check in range is: |x1 - x| <= 3 && |y1 - y| <= 3
-
-//used in the program to check if the outlines for boxes are close enough that they should merge into one box
-//checks the boorder choordinate on each and returns true if they are close enough
+//The equation to check x or y coordinates are range is
+//Equation: |x1 - x| <= 3 or |y1 - y| <= 3
 bool inRange(int max_var, int min_var){
 	if(abs(max_var - min_var) <= 3){
 		return true;
@@ -76,6 +75,7 @@ bool boxInRange(box& box1, box& box2){
 	return false;
 }
 
+//puts all the coordinates of box2 into box1
 void copyBoxes(box& box1, box& box2){
 	while(!box2.cord.empty()){
 		box1.cord.push_back(box2.cord.back());
@@ -83,7 +83,7 @@ void copyBoxes(box& box1, box& box2){
 	}
 }
 
-//looks at the max/min y/x to draw a line between the coordinates creating the box
+//creates line of 1's between max/min y/x coordinates: aka creating the box
 bool draw_box(box myBox, vector<vector<int> >& matrix){
 	int yDistance = abs(myBox.max_y - myBox.min_y);
 	int xDistance = abs(myBox.max_x - myBox.min_x);
