@@ -1,5 +1,5 @@
 bounding_box: main.o boxes.o pbmb_io.o 
-	g++ -o bounding_box *.o 
+	g++ -o bounding_box main.o boxes.o pbmb_io.o
 
 main.o: main.cc
 	g++ -c -g main.cc

@@ -12,7 +12,7 @@
 struct coordinates{
 	int x;
 	int y;
-	coordinates();
+	// coordinates();
 };
 
 struct box{
@@ -21,7 +21,7 @@ struct box{
 	int min_x;			//the most left point in the matrix
 	int min_y; 			//the highest point int he matrix
 	std::vector<coordinates> cord;	//pairs inside of the known boxes
-	box();
+	// box();
 };
 
 void setBox(box& myBox);

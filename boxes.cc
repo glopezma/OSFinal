@@ -17,17 +17,17 @@ void open_file(ifstream& fin, string file){
     }
 }
 
-coordinates::coordinates(){
-	x=0;
-	y=0;
-}
+// coordinates::coordinates(){
+// 	x=0;
+// 	y=0;
+// }
 
-box::box(){
-	max_x = 0;			
-	max_y = 0; 			
-	min_x = 0;			
-	min_y = 0; 			
-}
+// box::box(){
+// 	max_x = 0;			
+// 	max_y = 0; 			
+// 	min_x = 0;			
+// 	min_y = 0; 			
+// }
 
 void setBox(box& myBox){
 	for(int i=0; i<myBox.cord.size(); ++i){
@@ -62,7 +62,7 @@ void input_data(std::vector<std::vector<int> >& matrix, int col, int row, int *b
 
 //used in the program to check if the outlines for boxes are close enough that they should merge into one box
 //checks the boorder choordinate on each and returns true if they are close enough
-bool inRange(int max_var, int min_var, box myBox){
+bool inRange(int max_var, int min_var){
 	if(abs(max_var - min_var) <= 3){
 		return true;
 	}
@@ -73,7 +73,8 @@ bool inRange(int max_var, int min_var, box myBox){
 bool inRangeCord(int x, int y, box myBox){
 	for(int i=0; i<myBox.cord.size(); ++i){
 		if(inRange(myBox.cord[i].x, x) || inRange(myBox.cord[i].y, y)){
-			myBox.cord.push_back(coordinates());	//access last element in list
+			coordinates newCord;
+			myBox.cord.push_back(newCord);	//access last element in list
 			myBox.cord[myBox.cord.size()-1].x = x; 
 			myBox.cord[myBox.cord.size()-1].y = y;
 			return true;
@@ -84,7 +85,7 @@ bool inRangeCord(int x, int y, box myBox){
 
 //check if two boxes are in range of each other by calling inRange()
 bool boxInRange(box& box1, box& box2){
-	if(inRange(box1.max_x, box2.min_x, box1) || inRange(box1.min_x, box2.max_x, box1) || inRange(box1.min_y, box2.max_y, box1) || inRange(box1.max_y, box2.min_y, box1)){ //have to check 4 different things depending if above, below, left or right of each other.  
+	if(inRangeCord(box1.max_x, box2.min_x, box1) || inRangeCord(box1.min_x, box2.max_x, box1) || inRangeCord(box1.min_y, box2.max_y, box1) || inRangeCord(box1.max_y, box2.min_y, box1)){ //have to check 4 different things depending if above, below, left or right of each other.  
 		copyBoxes(box1, box2);
 		return true;
 	}

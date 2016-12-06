@@ -5,8 +5,6 @@
 #include <pthread.h>
 #include <stdlib.h>
 #include "boxes.h"
-#include "boxes.cc"
-#include "pbmb_io.cpp"
 #include "pbmb_io.hpp"
 using namespace std;
 
@@ -65,8 +63,10 @@ int main(int argc, char const *argv[]){
 		for(int j=0; j<row; ++j){
 			if(matrix[i][j] == 1){
 				if(boxes.empty()){	//If it's empty, then we need to create the first box which is done as such.  
-					boxes.push_back(box());
-					boxes[0].cord.push_back(coordinates());
+					box newBox;
+					coordinates newCord;
+					boxes.push_back(newBox);
+					boxes[0].cord.push_back(newCord);
 					boxes[0].cord[0].x = j;
 					boxes[0].cord[0].y = i;
 				}
@@ -77,8 +77,10 @@ int main(int argc, char const *argv[]){
 						}
 					}//if the coordinate didn't fit in any of the known boxes so far, then we create a new box with the coordniate in it.  
 					if(!found){
-						boxes.push_back(box());
-						boxes[boxes.size()-1].cord.push_back(coordinates());
+						box newBox;
+						coordinates newCord;
+						boxes.push_back(newBox);
+						boxes[boxes.size()-1].cord.push_back(newCord);
 						boxes[boxes.size()-1].cord[0].x = j;
 						boxes[boxes.size()-1].cord[0].y = i;
 						found=true;
