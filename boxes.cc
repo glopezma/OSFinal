@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 #include <cstring>
-#include <pthread>
+#include <pthread.h>
 #include <stdlib.h>
 #include <cmath>
 using namespace std;
@@ -17,78 +17,45 @@ void open_file(ifstream& fin, string file){
     }
 }
 
-hex::hex(){
-	one = 0;
-	two = 0;
-	four = 0;
-	eight = 0;
+coordinates::coordinates(){
+	x=0;
+	y=0;
 }
 
-box::setBox(){
-	for(int i=0; i<cord.size(); ++i){
-		if(cord[i].x > max_x){
-			max_x = cord[i].x;
-		}
-		else if(cord[i].y > max_y){
-			max_y = cord[i].y;
-		}
-		else if(cord[i].x < min_x){
-			min_x = cord[i].x;
-		}
-		else if(cord[i].y < min_y){
-			min_y = cord[i].y;
-		}
-	}
+box::box(){
+	max_x = 0;			
+	max_y = 0; 			
+	min_x = 0;			
+	min_y = 0; 			
 }
 
-//changes hex string into binary string
-hex::hex(char value, int col, int row){
-	string hexString = hexToBin(value);
-	for(int i = 0; i<4; ++i){
-		switch(i){
-			case 0: 
-				one = hexString.c_str()[i];
-				break;
-			case 1: 
-				two = hexString.c_str()[i];
-				break;
-			case 2: 
-				four = hexString.c_str()[i];
-				break;
-			case 3: 
-				eight = hexString.c_str()[i];
-				break;
+void setBox(box& myBox){
+	for(int i=0; i<myBox.cord.size(); ++i){
+		if(myBox.cord[i].x > myBox.max_x){
+			myBox.max_x = myBox.cord[i].x;
+		}
+		else if(myBox.cord[i].y > myBox.max_y){
+			myBox.max_y = myBox.cord[i].y;
+		}
+		else if(myBox.cord[i].x < myBox.min_x){
+			myBox.min_x = myBox.cord[i].x;
+		}
+		else if(myBox.cord[i].y < myBox.min_y){
+			myBox.min_y = myBox.cord[i].y;
 		}
 	}
 }
 
 //This function inputs the pbm image into a matrix
-void input_data(vector<vector<int> >& matrix, ifstream& fin, int& col, int& row){
+void input_data(std::vector<std::vector<int> >& matrix, int col, int row, int *barray){
 	//this function inputs all the data in the file into the program's matrix
-	string p4;
-	char temp;
-
-	//removing the "p4" and getting the Height and width
-	fin>>p4;
-	fin>>temp;
-	fin>>col;
-	fin>>row;
-	fin>>temp;
-
 	//imports the file into a matrix so easier to traverse
 	for(int i = 0; i<col; ++i){
 		for(int j = 0; j<row; ++j){
-			fin>>temp;
-			if(temp != '\n'){
-				matrix[i][j] = temp;	
-			}
+			matrix[i][j] = *barray;
+			barray++;	
 		}
 	}
-}
-
-//output the new file that is has the boxes in it
-void output_data(vector<vector<int> >& matrix, ofstream& fout, int col, int row){
-
 }
 
 //The equation to check in range is: |x1 - x| <= 3 && |y1 - y| <= 3
@@ -105,8 +72,8 @@ bool inRange(int max_var, int min_var, box myBox){
 //checks if coordinates belong in a box
 bool inRangeCord(int x, int y, box myBox){
 	for(int i=0; i<myBox.cord.size(); ++i){
-		if(abs(myBox.cord[i].x - x) <= 3 && abs(myBox.cord[i].y - y) <= 3){
-			myBox.cord.push_back(new coordinates);	//access last element in list
+		if(inRange(myBox.cord[i].x, x) || inRange(myBox.cord[i].y, y)){
+			myBox.cord.push_back(coordinates());	//access last element in list
 			myBox.cord[myBox.cord.size()-1].x = x; 
 			myBox.cord[myBox.cord.size()-1].y = y;
 			return true;
@@ -116,12 +83,19 @@ bool inRangeCord(int x, int y, box myBox){
 }
 
 //check if two boxes are in range of each other by calling inRange()
-bool boxInRange(box box1, box box2){
+bool boxInRange(box& box1, box& box2){
 	if(inRange(box1.max_x, box2.min_x, box1) || inRange(box1.min_x, box2.max_x, box1) || inRange(box1.min_y, box2.max_y, box1) || inRange(box1.max_y, box2.min_y, box1)){ //have to check 4 different things depending if above, below, left or right of each other.  
 		copyBoxes(box1, box2);
 		return true;
 	}
 	return false;
+}
+
+void copyBoxes(box& box1, box& box2){
+	while(!box2.cord.empty()){
+		box1.cord.push_back(box2.cord.back());
+		box2.cord.pop_back();
+	}
 }
 
 //looks at the max/min y/x to draw a line between the coordinates creating the box
@@ -138,44 +112,77 @@ bool draw_box(box myBox, vector<vector<int> >& matrix){
 		matrix[myBox.min_x+i][myBox.max_y]=1;	}
 }
 
-char binToHex(string value){
-	switch(value){
-		case "0000": return '0';
-        case "0001": return '1';
-        case "0010": return '2';
-        case "0011": return '3';
-        case "0100": return '4';
-        case "0101": return '5';
-        case "0110": return '6';
-        case "0111": return '7';
-        case "1000": return '8';
-        case "1001": return '9';
-        case "1010": return 'A';
-        case "1011": return 'B';
-        case "1100": return 'C';
-        case "1101": return 'D';
-        case "1110": return 'E';
-        case "1111": return 'F';
-    }
-}
+// char binToHex(string value){
+// 	switch(value){
+// 		case "0000": return '0';
+//         case "0001": return '1';
+//         case "0010": return '2';
+//         case "0011": return '3';
+//         case "0100": return '4';
+//         case "0101": return '5';
+//         case "0110": return '6';
+//         case "0111": return '7';
+//         case "1000": return '8';
+//         case "1001": return '9';
+//         case "1010": return 'A';
+//         case "1011": return 'B';
+//         case "1100": return 'C';
+//         case "1101": return 'D';
+//         case "1110": return 'E';
+//         case "1111": return 'F';
+//     }
+// }
 
-string hexToBin(char value){
-	switch(toupper(value)){
-		case '0': return "0000";
-        case '1': return "0001";
-        case '2': return "0010";
-        case '3': return "0011";
-        case '4': return "0100";
-        case '5': return "0101";
-        case '6': return "0110";
-        case '7': return "0111";
-        case '8': return "1000";
-        case '9': return "1001";
-        case 'A': return "1010";
-        case 'B': return "1011";
-        case 'C': return "1100";
-        case 'D': return "1101";
-        case 'E': return "1110";
-        case 'F': return "1111";
-	}
-}
+// string hexToBin(char value){
+// 	switch(toupper(value)){
+// 		case '0': return "0000";
+//         case '1': return "0001";
+//         case '2': return "0010";
+//         case '3': return "0011";
+//         case '4': return "0100";
+//         case '5': return "0101";
+//         case '6': return "0110";
+//         case '7': return "0111";
+//         case '8': return "1000";
+//         case '9': return "1001";
+//         case 'A': return "1010";
+//         case 'B': return "1011";
+//         case 'C': return "1100";
+//         case 'D': return "1101";
+//         case 'E': return "1110";
+//         case 'F': return "1111";
+// 	}
+// }
+
+// hex::hex(){
+// 	one = 0;
+// 	two = 0;
+// 	four = 0;
+// 	eight = 0;
+// }
+
+//changes hex string into binary string
+// hex::hex(char value, int col, int row){
+// 	string hexString = hexToBin(value);
+// 	for(int i = 0; i<4; ++i){
+// 		switch(i){
+// 			case 0: 
+// 				one = hexString.c_str()[i];
+// 				break;
+// 			case 1: 
+// 				two = hexString.c_str()[i];
+// 				break;
+// 			case 2: 
+// 				four = hexString.c_str()[i];
+// 				break;
+// 			case 3: 
+// 				eight = hexString.c_str()[i];
+// 				break;
+// 		}
+// 	}
+// }
+
+//output the new file that is has the boxes in it
+// void output_data(vector<vector<int> >& matrix, ofstream& fout, int col, int row){
+
+// }
