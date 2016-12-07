@@ -25,7 +25,7 @@ int main(int argc, char const *argv[]){
 	}
 	int col = 0;
 	int row = 0;
-	bool found = true;
+	bool found = false;
 	string fileName = argv[1];
 	//int pthreadNum = atoi(argv[2]);			
 	vector<box> boxes;				//contains the struct that holds the coordinates of the letters I need to box
@@ -48,6 +48,7 @@ int main(int argc, char const *argv[]){
 	for(int i=0; i<col; ++i){
 		for(int j=0; j<row; ++j){
 			if(matrix[i][j] == 1){
+				found = false;
 				if(boxes.empty()){	//If it's empty, then we need to create the first box which is done as such.  
 					box newBox;
 					coordinates newCord;
@@ -55,47 +56,29 @@ int main(int argc, char const *argv[]){
 					boxes[0].cord.push_back(newCord);
 					boxes[0].cord[0].x = j;
 					boxes[0].cord[0].y = i;
-					// cout<<"boxes:"<<0<<
 				}
 				else{
 					for(int k=0; k<boxes.size(); ++k){		//checking the coordinates to see if there are in range of any known boxes
 						if(inRangeCord(i, j, boxes[k])){	//Send the box and then check all the coordinate points in that box 
-							found = false;					//If we found something then we don't want to create a new element
+							found = true;					//If we found something then we don't want to create a new element
 						}
 					}//if the coordinate didn't fit in any of the known boxes so far, then we create a new box with the coordniate in it.  
 					if(!found){
 						box newBox;
 						coordinates newCord;
+						newCord.x = j;
+						newCord.y = i;
+						newBox.cord.push_back(newCord);
 						boxes.push_back(newBox);
-						boxes[boxes.size()-1].cord.push_back(newCord);
-						boxes[boxes.size()-1].cord[0].x = j;
-						boxes[boxes.size()-1].cord[0].y = i;
-						found=true;
 					}
 				}
 			}
 		}
 	}
-// //-------------------------------- Before box --------------------------------
-// 	cout<<endl<<"Matrix Before:"<<endl;
-// 	for(int i=0; i<col; ++i){
-// 	 	// cout<<endl<<col<<"/"<<matrix.size()<<" "<<row<<"/"<<matrix[i].size()<<endl;
-// 		// cout<<i<<".) ";
-// 		for(int j=0; j<row; ++j){
-// 			cout<<matrix[i][j];
-// 			// cout<<"i:"<<i<<" j:"<<j<<endl;
-// 		}
-// 		cout<<endl;
-// 	}
-// 	cout<<"Before boxes"<<endl;
-
-// //-------------------------------- Before box --------------------------------
 
 	//set min and max for all boxes
 	for(int i=0; i<boxes.size(); ++i){
-		// cout<<"myBox: "<<i<<endl;
 		setBox(boxes[i]); 
-		// cout<<endl;
 	}
 
 	//merge boxes if they are close enough together
@@ -112,8 +95,6 @@ int main(int argc, char const *argv[]){
 			}
 		}
 	}
-		cout<<"error"<<endl;
-
 
 	//set min and max for all boxes again if they merged
 	for(int i=0; i<boxes.size(); ++i){
@@ -126,6 +107,7 @@ int main(int argc, char const *argv[]){
 		for(int j=0; j<row; ++j){
 			cout<<matrix[i][j];
 		}
+		cout<<endl;
 	}
 //-------------------------------- After Box --------------------------------
 

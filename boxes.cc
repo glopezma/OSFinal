@@ -22,17 +22,16 @@ void input_data(std::vector<std::vector<int> >& matrix, int col, int row, int *b
 //sets max_x, max_y, min_x, min_y
 void setBox(box& myBox){
 	for(int i=0; i<myBox.cord.size(); ++i){
-		// cout<<"x:"<<myBox.cord[i].x<<" y:"<<myBox.cord[i].y<<endl;
 		if(myBox.cord[i].x > myBox.max_x){
 			myBox.max_x = myBox.cord[i].x;
 		}
-		else if(myBox.cord[i].y > myBox.max_y){
+		if(myBox.cord[i].x < myBox.min_x){
+			myBox.min_x = myBox.cord[i].x;
+		}		
+		if(myBox.cord[i].y > myBox.max_y){
 			myBox.max_y = myBox.cord[i].y;
 		}
-		else if(myBox.cord[i].x < myBox.min_x){
-			myBox.min_x = myBox.cord[i].x;
-		}
-		else if(myBox.cord[i].y < myBox.min_y){
+		if(myBox.cord[i].y < myBox.min_y){
 			myBox.min_y = myBox.cord[i].y;
 		}
 	}
@@ -48,13 +47,13 @@ bool inRange(int max_var, int min_var){
 }
 
 //checks if coordinates belong in a box
-bool inRangeCord(int x, int y, box myBox){
+bool inRangeCord(int y, int x, box& myBox){
 	for(int i=0; i<myBox.cord.size(); ++i){
 		if(inRange(myBox.cord[i].x, x) && inRange(myBox.cord[i].y, y)){
 			coordinates newCord;
+			newCord.x = x;
+			newCord.y = y;
 			myBox.cord.push_back(newCord);	//access last element in list
-			myBox.cord[myBox.cord.size()-1].x = x; 
-			myBox.cord[myBox.cord.size()-1].y = y;
 			return true;
 		}
 	}
@@ -82,16 +81,13 @@ void copyBoxes(box& box1, box& box2){
 bool draw_box(box myBox, vector<vector<int> >& matrix){
 	int yDistance = abs(myBox.max_y - myBox.min_y);
 	int xDistance = abs(myBox.max_x - myBox.min_x);
-
-	cout<<"yDistance: "<<yDistance<<" xDistance: "<<xDistance<<endl;
-
 	for(int i=0; i<=yDistance; ++i){
 		matrix[myBox.min_y+i][myBox.min_x]=1;
 		matrix[myBox.min_y+i][myBox.max_x]=1;
 	}
 	for(int i=0; i<=xDistance; ++i){
 		matrix[myBox.min_y][myBox.min_x+i]=1;
-		matrix[myBox.min_y][myBox.max_x+i]=1;	
+		matrix[myBox.max_y][myBox.min_x+i]=1;	
 	}
 }
 

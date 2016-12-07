@@ -1,6 +1,7 @@
 #ifndef BOXES_H
 #define BOXES_H
 #include <iostream>
+#include <climits>
 #include <fstream>
 #include <vector>
 #include <string>
@@ -16,10 +17,10 @@ struct coordinates{
 };
 
 struct box{
-	int max_x;			//the furthest right point in the matrix
-	int max_y; 			//the lowest point in the matrix
-	int min_x;			//the most left point in the matrix
-	int min_y; 			//the highest point int he matrix
+	int max_x = 0;				//the furthest right point in the matrix
+	int max_y = 0; 				//the lowest point in the matrix
+	int min_x = INT_MAX;			//the most left point in the matrix
+	int min_y = INT_MAX; 			//the highest point int he matrix
 	std::vector<coordinates> cord;	//pairs inside of the known boxes
 	// box();
 };
@@ -28,7 +29,7 @@ void setBox(box& myBox);
 void input_data(std::vector<std::vector<int> >& matrix, int col, int row, int *barray);
 bool draw_box(box myBox, std::vector<std::vector<int> >& matrix);
 bool inRange(int max_var, int min_var);
-bool inRangeCord(int x, int y, box myBox);
+bool inRangeCord(int y, int x, box& myBox);
 bool boxInRange(box& box1, box& box2);
 void copyBoxes(box& box1, box& box2);
 
