@@ -11,15 +11,10 @@ using namespace std;
 
 //This function inputs the pbm image into a matrix
 void input_data(std::vector<std::vector<int> >& matrix, int col, int row, int *barray){
-	//this function inputs all the data in the file into the program's matrix
-	//imports the file into a matrix so easier to traverse
-	cout<<col<<" "<<row<<endl;
 	for(int i=0; i<col; ++i){
-		cout<<i<<".) ";
 		for(int j=0; j<row; ++j){
 			matrix[i][j] = *((int *)barray+i * row+j);
-		    cout<<matrix[i][j];
-		}	cout<<endl;
+		}
 	}
 	delete [] barray;
 }
@@ -27,6 +22,7 @@ void input_data(std::vector<std::vector<int> >& matrix, int col, int row, int *b
 //sets max_x, max_y, min_x, min_y
 void setBox(box& myBox){
 	for(int i=0; i<myBox.cord.size(); ++i){
+		// cout<<"x:"<<myBox.cord[i].x<<" y:"<<myBox.cord[i].y<<endl;
 		if(myBox.cord[i].x > myBox.max_x){
 			myBox.max_x = myBox.cord[i].x;
 		}
@@ -43,7 +39,7 @@ void setBox(box& myBox){
 }
 
 //The equation to check x or y coordinates are range is
-//Equation: |x1 - x| <= 3 or |y1 - y| <= 3
+//Equation: |x1 - x| <= 3 && |y1 - y| <= 3
 bool inRange(int max_var, int min_var){
 	if(abs(max_var - min_var) <= 3){
 		return true;
@@ -54,7 +50,7 @@ bool inRange(int max_var, int min_var){
 //checks if coordinates belong in a box
 bool inRangeCord(int x, int y, box myBox){
 	for(int i=0; i<myBox.cord.size(); ++i){
-		if(inRange(myBox.cord[i].x, x) || inRange(myBox.cord[i].y, y)){
+		if(inRange(myBox.cord[i].x, x) && inRange(myBox.cord[i].y, y)){
 			coordinates newCord;
 			myBox.cord.push_back(newCord);	//access last element in list
 			myBox.cord[myBox.cord.size()-1].x = x; 
@@ -67,7 +63,7 @@ bool inRangeCord(int x, int y, box myBox){
 
 //check if two boxes are in range of each other by calling inRange()
 bool boxInRange(box& box1, box& box2){
-	if(inRangeCord(box1.max_x, box2.min_x, box1) || inRangeCord(box1.min_x, box2.max_x, box1) || inRangeCord(box1.min_y, box2.max_y, box1) || inRangeCord(box1.max_y, box2.min_y, box1)){ //have to check 4 different things depending if above, below, left or right of each other.  
+	if((inRangeCord(box1.max_x, box2.min_x, box1) || inRangeCord(box1.min_x, box2.max_x, box1)) && (inRangeCord(box1.min_y, box2.max_y, box1) || inRangeCord(box1.max_y, box2.min_y, box1))){ //have to check 4 different things depending if above, below, left or right of each other.  
 		copyBoxes(box1, box2);
 		return true;
 	}
@@ -87,13 +83,16 @@ bool draw_box(box myBox, vector<vector<int> >& matrix){
 	int yDistance = abs(myBox.max_y - myBox.min_y);
 	int xDistance = abs(myBox.max_x - myBox.min_x);
 
+	cout<<"yDistance: "<<yDistance<<" xDistance: "<<xDistance<<endl;
+
 	for(int i=0; i<=yDistance; ++i){
 		matrix[myBox.min_y+i][myBox.min_x]=1;
 		matrix[myBox.min_y+i][myBox.max_x]=1;
 	}
 	for(int i=0; i<=xDistance; ++i){
-		matrix[myBox.min_x+i][myBox.min_y]=1;
-		matrix[myBox.min_x+i][myBox.max_y]=1;	}
+		matrix[myBox.min_y][myBox.min_x+i]=1;
+		matrix[myBox.min_y][myBox.max_x+i]=1;	
+	}
 }
 
 // char binToHex(string value){

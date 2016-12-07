@@ -55,6 +55,7 @@ int main(int argc, char const *argv[]){
 					boxes[0].cord.push_back(newCord);
 					boxes[0].cord[0].x = j;
 					boxes[0].cord[0].y = i;
+					// cout<<"boxes:"<<0<<
 				}
 				else{
 					for(int k=0; k<boxes.size(); ++k){		//checking the coordinates to see if there are in range of any known boxes
@@ -75,29 +76,31 @@ int main(int argc, char const *argv[]){
 			}
 		}
 	}
-//-------------------------------- Before box --------------------------------
-	cout<<endl<<"Matrix Before:"<<endl;
-	for(int i=0; i<col; ++i){
-	 	// cout<<endl<<col<<"/"<<matrix.size()<<" "<<row<<"/"<<matrix[i].size()<<endl;
-		cout<<i<<".) ";
-		for(int j=0; j<row; ++j){
-			cout<<matrix[i][j];
-			// cout<<"i:"<<i<<" j:"<<j<<endl;
-		}
-		cout<<endl;
-	}
-	cout<<"Before boxes";
+// //-------------------------------- Before box --------------------------------
+// 	cout<<endl<<"Matrix Before:"<<endl;
+// 	for(int i=0; i<col; ++i){
+// 	 	// cout<<endl<<col<<"/"<<matrix.size()<<" "<<row<<"/"<<matrix[i].size()<<endl;
+// 		// cout<<i<<".) ";
+// 		for(int j=0; j<row; ++j){
+// 			cout<<matrix[i][j];
+// 			// cout<<"i:"<<i<<" j:"<<j<<endl;
+// 		}
+// 		cout<<endl;
+// 	}
+// 	cout<<"Before boxes"<<endl;
 
-//-------------------------------- Before box --------------------------------
+// //-------------------------------- Before box --------------------------------
 
 	//set min and max for all boxes
 	for(int i=0; i<boxes.size(); ++i){
+		// cout<<"myBox: "<<i<<endl;
 		setBox(boxes[i]); 
+		// cout<<endl;
 	}
 
 	//merge boxes if they are close enough together
-	for(int i=0; i<col; ++i){
-		for(int j=i; row; ++j){
+	for(int i=0; i<boxes.size(); ++i){
+		for(int j=i; j<boxes.size(); ++j){
 			if(j != i){
 				if(boxInRange(boxes[i], boxes[j])){
 					deleteBoxes.push_back(j);
@@ -109,6 +112,8 @@ int main(int argc, char const *argv[]){
 			}
 		}
 	}
+		cout<<"error"<<endl;
+
 
 	//set min and max for all boxes again if they merged
 	for(int i=0; i<boxes.size(); ++i){
@@ -117,17 +122,11 @@ int main(int argc, char const *argv[]){
 	}
 
 //-------------------------------- After Box --------------------------------
-	cout<<endl<<col<<" "<<row;
-	cout<<endl<<"Matrix:"<<endl;
 	for(int i=0; i<col; ++i){
-		cout<<i<<".) ";
 		for(int j=0; j<row; ++j){
 			cout<<matrix[i][j];
 		}
-		cout<<endl;
 	}
-	cout<<"after boxes";
-
 //-------------------------------- After Box --------------------------------
 
 	// b = new int[col*row];
