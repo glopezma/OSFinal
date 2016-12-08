@@ -18,11 +18,29 @@ using namespace std;
 //number of boxes will be outputted with the cerr (standard error) output
 //abcdef.pbm.new
 
+ void *PThreading(void *threadid)
+ {
+    long tid;
+    tid = (long)threadid;
+    pthread_exit(NULL);
+ }
+
 int main(int argc, char const *argv[]){
 	//If there aren't enough arguments, then the program shuts down
 	if(argc != 3){
 		exit(1);
 	}
+	pthread_t threads[atoi(argv[2])];
+    int rc;
+    long t;
+    for(t=0; t<atoi(argv[2]); t++){
+       rc = pthread_create(&threads[t], NULL, PThreading, (void *)t);
+       if (rc){
+          printf("ERROR; return code from pthread_create() is %d\n", rc);
+          exit(-1);
+       }
+    }
+
 	int col = 0;
 	int row = 0;
 	bool found = false;
@@ -93,7 +111,7 @@ int main(int argc, char const *argv[]){
 		}
 		while(!deleteBoxes.empty()){
 			boxes.erase(boxes.begin()+deleteBoxes.back());
-			cout<<"J = "<<deleteBoxes.back()<<endl;
+			// cout<<"J = "<<deleteBoxes.back()<<endl;
 			deleteBoxes.pop_back(); 
 		}	
 	}
@@ -118,6 +136,7 @@ int main(int argc, char const *argv[]){
 		fout<<endl;
 	}
 	cerr<<boxes.size()<<endl;
+    pthread_exit(NULL);
 
 	return 0;
 }
