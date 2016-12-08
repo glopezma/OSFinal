@@ -32,6 +32,7 @@ int main(int argc, char const *argv[]){
 	vector<int> deleteBoxes; 		//structure for error correction to hold which boxes need to be deleted during merging of boxes
 
 	int *b;
+	int *a;
 	bool error;
 	
 	error = pbmb_read ( fileName, row, col, &b );
@@ -43,7 +44,7 @@ int main(int argc, char const *argv[]){
 	vector<vector<int> > matrix(col, std::vector<int>(row)); //create the cc*rr matrix
 
 	input_data(matrix, col, row, b); 	//fills matrix with the data from the .pbm file
- 
+
 	//This is the initial creation of boxes that will need another function at the end to make sure there were no errors.  It groups coordinates together. 
 	for(int i=0; i<col; ++i){
 		for(int j=0; j<row; ++j){
@@ -89,11 +90,12 @@ int main(int argc, char const *argv[]){
 					deleteBoxes.push_back(j);
 				}
 			}
-			while(!deleteBoxes.empty()){
-				boxes.erase(boxes.begin()+deleteBoxes.back());
-				deleteBoxes.pop_back();
-			}
 		}
+		while(!deleteBoxes.empty()){
+			boxes.erase(boxes.begin()+deleteBoxes.back());
+			cout<<"J = "<<deleteBoxes.back()<<endl;
+			deleteBoxes.pop_back(); 
+		}	
 	}
 
 	//set min and max for all boxes again if they merged
@@ -103,19 +105,19 @@ int main(int argc, char const *argv[]){
 	}
 
 //-------------------------------- After Box --------------------------------
+//-------------------------------- After Box --------------------------------
+	
+	ofstream fout;
+	string newName = fileName+".new";
+	fout.open(newName.c_str());
+	fout<<"p4"<<endl<<col<<" "<<row<<endl;
 	for(int i=0; i<col; ++i){
 		for(int j=0; j<row; ++j){
-			cout<<matrix[i][j];
+			fout<<matrix[i][j];
 		}
-		cout<<endl;
+		fout<<endl;
 	}
-//-------------------------------- After Box --------------------------------
-
-	// b = new int[col*row];
-	//put all matrix data into array
-	// pbmb_write(outputFile, col, row, b);
-
-	cerr<<boxes.size();
+	cerr<<boxes.size()<<endl;
 
 	return 0;
 }

@@ -62,10 +62,17 @@ bool inRangeCord(int y, int x, box& myBox){
 
 //check if two boxes are in range of each other by calling inRange()
 bool boxInRange(box& box1, box& box2){
-	if((inRangeCord(box1.max_x, box2.min_x, box1) || inRangeCord(box1.min_x, box2.max_x, box1)) && (inRangeCord(box1.min_y, box2.max_y, box1) || inRangeCord(box1.max_y, box2.min_y, box1))){ //have to check 4 different things depending if above, below, left or right of each other.  
-		copyBoxes(box1, box2);
-		return true;
+	for(int i=0; i<box1.cord.size(); ++i){
+		for(int j=0; j<box2.cord.size(); ++j){
+			if(inRange(box1.cord[i].x, box2.cord[j].x) && inRange(box1.cord[i].y, box2.cord[j].y)){
+				copyBoxes(box1, box2);
+				return true;
+			}
+		}
 	}
+	// if((inRangeCord(box1.max_x, box2.min_x, box1) || inRangeCord(box1.min_x, box2.max_x, box1)) && (inRangeCord(box1.min_y, box2.max_y, box1) || inRangeCord(box1.max_y, box2.min_y, box1))){ //have to check 4 different things depending if above, below, left or right of each other.  
+	// 	return true;
+	// }
 	return false;
 }
 
