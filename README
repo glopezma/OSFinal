@@ -1,0 +1,2 @@
+With all test cases for the threading, I saw no speedup what so ever.  It was pretty random with negligable speedup.  
+just type make and it will compile.  Then type in ./bounding_box filenamae num_threads

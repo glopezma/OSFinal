@@ -122,9 +122,7 @@ int main(int argc, char const *argv[]){
 		draw_box(boxes[i], matrix);
 	}
 
-//-------------------------------- After Box --------------------------------
-//-------------------------------- After Box --------------------------------
-	
+	//output everything to a file 	
 	ofstream fout;
 	string newName = fileName+".new";
 	fout.open(newName.c_str());
@@ -136,6 +134,8 @@ int main(int argc, char const *argv[]){
 		fout<<endl;
 	}
 	cerr<<boxes.size()<<endl;
+
+	//output the number of boxes
     pthread_exit(NULL);
 
 	return 0;
