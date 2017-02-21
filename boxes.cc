@@ -10,12 +10,15 @@
 using namespace std;
 
 //This function inputs the pbm image into a matrix
+//Ohasdlf asdkfjasld fjasldkfjaslkdfj lasdjflasdjf lasjdf asjdlf jas
+//laskd flasdjflasj dflk ajsdf
 void input_data(std::vector<std::vector<int> >& matrix, int col, int row, int *barray){
 	for(int i=0; i<col; ++i){
 		for(int j=0; j<row; ++j){
 			matrix[i][j] = *((int *)barray+i * row+j);
 		}
 	}
+	// delete [] barray;
 	delete [] barray;
 }
 
